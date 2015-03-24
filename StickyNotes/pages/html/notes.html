@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+    <body>
+        <h3>Welcome, here you can manage your notes!</h3>
+        <form action="/add-note?notebook_name={{ notebook_name }}" method="post">
+            Title
+            <div>
+                <textarea name="content" rows="1" cols="60"></textarea></div>
+            Content
+            <div>
+                <textarea name="description" rows="4" cols="60"></textarea></div>
+            <div>Color:
+                <select name="color">
+                    <option value="#FFD1D1">Red</option>
+                    <option value="#FFFF99">Yellow</option>
+                    <option value="#99D6FF">Blue</option>
+                    <option value="#ADFFAD">Green</option>
+                </select>
+            </div>
+            <br>
+            <div>State:
+                <select name="state">
+                    <option value="To do">To do</option>
+                    <option value="In progress">In progress</option>
+                    <option value="Done">Done</option>
+                </select>
+            </div>
+            <br>
+            <div><input type="submit" value="Add note"></div>
+        </form>
+
+        <hr>
+
+        {% for note in notes %}
+            {% if note.author %}
+            <div style="background-color: {{ note.color }}">
+                <b>{{ note.author.email }}
+                    {% if user and user.user_id() == note.author.identity %}
+                    (You)
+                    {% endif %}
+                </b>
+                on {{ note.date }}
+                <blockquote><i>{{ note.title }}</i></blockquote>
+                <blockquote>{{ note.content }}</blockquote>
+                <div>
+                    State: {{ note.state }}
+                    (
+                    {% for state in POSSIBLE_STATES %}
+                        {% if state != note.state %}
+                            {{ state }}
+                        {% endif %}
+                    {% endfor %}
+                )</div>
+            </div>
+            <br>
+            {% endif %}
+        {% endfor %}
+
+
+        <hr>
+
+        <form>Notebook name:
+            <input value="{{ notebook_name }}" name="notebook_name">
+            <input type="submit" value="switch">
+        </form>
+
+        <a href="{{ url|safe }}">{{ url_linktext }}</a>
+
+    </body>
+</html>
+{% endautoescape %}
