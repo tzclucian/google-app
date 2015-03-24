@@ -44,14 +44,19 @@
                 <blockquote><i>{{ note.title }}</i></blockquote>
                 <blockquote>{{ note.content }}</blockquote>
                 <div>
-                    State: {{ note.state }}
-                    (
-                    {% for state in POSSIBLE_STATES %}
-                        {% if state != note.state %}
-                            {{ state }}
-                        {% endif %}
-                    {% endfor %}
-                )</div>
+                    <form action="/update-note?notebook_name={{ notebook_name }}" method="POST">
+                        State: <b>{{ note.state }}</b>
+                        (
+                        {% for state in POSSIBLE_STATES %}
+                            {% if state != note.state %}
+                                <input value="{{ state }}" name="desired_action" type="submit"/>
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="note" value="{{ note }}">
+                        <input style="background-color: #FF4D4D" value="Delete" name="desired_action" type="submit"/>
+                        )
+                    </form>
+                </div>
             </div>
             <br>
             {% endif %}

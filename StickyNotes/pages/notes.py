@@ -1,7 +1,5 @@
-__author__ = 'p3700473'
+__author__ = 'Lucian Tuca'
 
-import urllib
-import cgi
 import os
 
 import webapp2
@@ -38,12 +36,11 @@ class NotesPage(webapp2.RequestHandler):
 
         notes_query = Note.query(
             ancestor=notebook_key(notebook_name)).order(-Note.date)
-        notes = notes_query.fetch(10)
+        notes = notes_query.fetch()
 
         user = users.get_current_user()
         if not user:
             self.redirect('/')
-
 
         url = users.create_logout_url(self.request.uri)
         url_linktext = 'Logout'
@@ -59,3 +56,4 @@ class NotesPage(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('html/notes.html')
         self.response.write(template.render(template_values))
+

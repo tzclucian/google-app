@@ -1,7 +1,8 @@
-__author__ = 'p3700473'
+__author__ = 'Lucian Tuca'
 
 from google.appengine.ext import ndb
 from author import Author
+
 
 class Note(ndb.Model):
     """
